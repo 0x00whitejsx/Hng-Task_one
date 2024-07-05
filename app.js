@@ -1,19 +1,37 @@
 const express = require('express');
-const app = express();
 const axios = require('axios');
 
-const port = 8080
-
+const app = express();
+const port = 8080;
+const url = 'https://api.ip2location.io/';
+const apiKey = 'D74C899063FA3AA7864A20CA0D5E189A';
 
 app.get("/api/hello", async (req, res) => {
-   const ip = req.headers['cf-connecting-ip'] ||
-              req.headers['x-real-ip'] ||
-              req.headers['x-forwarded-for'] ||
-              req.socket.remoteAddress || '';
-              
+    const ip = req.headers['cf-connecting-ip'] ||
+               req.headers['x-real-ip'] ||
+               req.headers['x-forwarded-for'] ||
+               req.socket.remoteAddress || '';
+
+    const visitor_name = req.query.visitor_name || 'Guest';
+
+    try {
+        const response = await axios.get(url, {
+            params: {
+                key: apiKey,
+                ip: ip
+            }
+        });
+
+        console.log(response.data);
         res.json({
-            ip:ip
-        })
+            "client_ip": response.data.ip,
+            "location": response.data.city_name,
+            "greeting": `Hello, ${visitor_name}, the temperature is 11 degrees Celsius in ${response.data.city_name}`
+        });
+    } catch (error) {
+        console.error('Error making the API request:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 app.listen(port, () => {
