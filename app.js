@@ -2,9 +2,12 @@ const express = require('express');
 const axios = require('axios');
 
 const app = express();
-const port = 8080;
+const port = 8081;
 const url = 'https://api.ip2location.io/';
 const apiKey = 'D74C899063FA3AA7864A20CA0D5E189A';
+
+
+
 
 app.get("/api/hello", async (req, res) => {
     const ip = req.headers['cf-connecting-ip'] ||
@@ -22,7 +25,8 @@ app.get("/api/hello", async (req, res) => {
             }
         });
 
-        console.log(response.data);
+        console.log(response.data.latitude);
+        console.log(response.data.longitude);
         res.json({
             "client_ip": response.data.ip,
             "location": response.data.city_name,
