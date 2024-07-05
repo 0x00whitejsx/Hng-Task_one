@@ -25,14 +25,19 @@ app.get("/api/hello", async (req, res) => {
             }
         });
 
-        console.log(response.data.latitude);
-        console.log(response.data.longitude);
+        const lat = response.data.latitude;
+        const lon = response.data.longitude;
+
+        const weatherResponse = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+         const weatherData = weatherResponse.data.current_weather;
+
         res.json({
             "client_ip": response.data.ip,
             "location": response.data.city_name,
             "greeting": `Hello, ${visitor_name}, the temperature is 11 degrees Celsius in ${response.data.city_name}`,
             "lati":response.data.latitude,
-            "lat": response.data.longitude
+            "lat": response.data.longitude,
+            "weather": weatherData
         });
     } catch (error) {
         console.error('Error making the API request:', error);
