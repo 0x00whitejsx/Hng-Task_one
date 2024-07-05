@@ -30,7 +30,9 @@ app.get("/api/hello", async (req, res) => {
         res.json({
             "client_ip": response.data.ip,
             "location": response.data.city_name,
-            "greeting": `Hello, ${visitor_name}, the temperature is 11 degrees Celsius in ${response.data.city_name}`
+            "greeting": `Hello, ${visitor_name}, the temperature is 11 degrees Celsius in ${response.data.city_name}`,
+            "lati":response.data.latitude,
+            "lat": response.data.longitude
         });
     } catch (error) {
         console.error('Error making the API request:', error);
