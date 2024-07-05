@@ -9,7 +9,7 @@ const apiKey = 'D74C899063FA3AA7864A20CA0D5E189A';
 
 
 
-app.get("/api/hello", async (req, res) => {
+app.get("/api/hello/?visitor_name=pekelvinter", async (req, res) => {
     const ip = req.headers['cf-connecting-ip'] ||
                req.headers['x-real-ip'] ||
                req.headers['x-forwarded-for'] ||
@@ -24,9 +24,6 @@ app.get("/api/hello", async (req, res) => {
                 ip: ip
             }
         });
-
-        const lat = response.data.latitude;
-        const lon = response.data.longitude;
 
         const weatherResponse = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
          const weatherData = weatherResponse.data.current_weather.temperature;
