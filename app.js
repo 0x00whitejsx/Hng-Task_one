@@ -27,11 +27,12 @@ app.get("/api/hello/?visitor_name=pekelvinter", async (req, res) => {
 
         const weatherResponse = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
          const weatherData = weatherResponse.data.current_weather.temperature;
-
+         const greating = `Hello, ${visitor_name}, the temperature is ${weatherData} degrees Celsius in ${response.data.city_name}`
+         const cleanedGreeting = greating.replace(/["\\]/g, '');
         res.json({
             "client_ip": response.data.ip,
             "location": response.data.city_name,
-            "greeting": `Hello, ${visitor_name}, the temperature is ${weatherData} degrees Celsius in ${response.data.city_name}`,
+            "greeting": cleanedGreeting,
            
         });
     } catch (error) {
